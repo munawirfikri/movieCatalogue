@@ -6,7 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
+import com.munawirfikri.bajp_submission3.R
 import com.munawirfikri.bajp_submission3.adapter.FavoriteTvShowAdapter
 import com.munawirfikri.bajp_submission3.databinding.FragmentFavoriteTvShowBinding
 import com.munawirfikri.bajp_submission3.viewmodel.ViewModelFactory
@@ -14,33 +18,54 @@ import com.munawirfikri.bajp_submission3.viewmodel.ViewModelFactory
 
 class FavoriteTvShowFragment : Fragment() {
 
-    private lateinit var fragmentMovieBinding: FragmentFavoriteTvShowBinding
+    private lateinit var fragmentTvShowBinding: FragmentFavoriteTvShowBinding
+    private lateinit var tvShowAdapter: FavoriteTvShowAdapter
+    private lateinit var viewModel: FavoriteViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        fragmentMovieBinding = FragmentFavoriteTvShowBinding.inflate(layoutInflater, container, false)
-        return fragmentMovieBinding.root
+        fragmentTvShowBinding = FragmentFavoriteTvShowBinding.inflate(layoutInflater, container, false)
+        return fragmentTvShowBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        itemTouchHelper.attachToRecyclerView(fragmentTvShowBinding.rvFavTvShow)
         if (activity != null) {
             val factory = ViewModelFactory.getInstance(requireActivity())
-            val viewModel = ViewModelProvider(this, factory)[FavoriteViewModel::class.java]
+            viewModel = ViewModelProvider(this, factory)[FavoriteViewModel::class.java]
 
-            val tvShowAdapter = FavoriteTvShowAdapter()
-            fragmentMovieBinding.progressBar.visibility = View.VISIBLE
+            tvShowAdapter = FavoriteTvShowAdapter()
+            fragmentTvShowBinding.progressBar.visibility = View.VISIBLE
             viewModel.getFavoriteTvShows().observe(viewLifecycleOwner, {tvShows ->
-                fragmentMovieBinding.progressBar.visibility = View.GONE
-                tvShowAdapter.setTvShow(tvShows)
+                fragmentTvShowBinding.progressBar.visibility = View.GONE
+                tvShowAdapter.submitList(tvShows)
                 tvShowAdapter.notifyDataSetChanged()
             })
 
 
-            with(fragmentMovieBinding.rvFavTvShow) {
+            with(fragmentTvShowBinding.rvFavTvShow) {
                 this.layoutManager = LinearLayoutManager(context)
                 this.setHasFixedSize(true)
                 this.adapter = tvShowAdapter
             }
         }
     }
+
+    private val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.Callback() {
+        override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int =
+                makeMovementFlags(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT)
+        override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean = true
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+            if (view != null) {
+                val swipedPosition = viewHolder.adapterPosition
+                val tvShowEntity = tvShowAdapter.getSwipedData(swipedPosition)
+                tvShowEntity?.let { viewModel.setFavoriteTvShow(it) }
+                val snackbar = Snackbar.make(view as View, R.string.message_undo, Snackbar.LENGTH_LONG)
+                snackbar.setAction(R.string.message_ok) { v ->
+                    tvShowEntity?.let { viewModel.setFavoriteTvShow(it) }
+                }
+                snackbar.show()
+            }
+        }
+    })
 }

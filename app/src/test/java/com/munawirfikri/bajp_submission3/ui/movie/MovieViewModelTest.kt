@@ -3,9 +3,9 @@ package com.munawirfikri.bajp_submission3.ui.movie
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.paging.PagedList
 import com.munawirfikri.bajp_submission3.data.source.local.entity.MovieEntity
 import com.munawirfikri.bajp_submission3.data.source.MovieRepository
-import com.munawirfikri.bajp_submission3.utils.DataDummy
 import com.munawirfikri.bajp_submission3.vo.Resource
 import org.junit.Before
 import org.junit.Test
@@ -30,7 +30,10 @@ class MovieViewModelTest {
     private lateinit var movieRepository: MovieRepository
 
     @Mock
-    private lateinit var observer: Observer<Resource<List<MovieEntity>>>
+    private lateinit var observer: Observer<Resource<PagedList<MovieEntity>>>
+
+    @Mock
+    private lateinit var pagedList: PagedList<MovieEntity>
 
     @Before
     fun setUp() {
@@ -39,9 +42,11 @@ class MovieViewModelTest {
 
     @Test
     fun getMovies() {
-        val dummyMovies = Resource.success(DataDummy.generateDummyMovies())
-        val movies = MutableLiveData<Resource<List<MovieEntity>>>()
+        val dummyMovies = Resource.success(pagedList)
+        `when`(dummyMovies.data?.size).thenReturn(10)
+        val movies = MutableLiveData<Resource<PagedList<MovieEntity>>>()
         movies.value = dummyMovies
+
         `when`(movieRepository.getAllMovies()).thenReturn(movies)
         val movieEntities = viewModel.getMovies().value?.data
         verify<MovieRepository>(movieRepository).getAllMovies()

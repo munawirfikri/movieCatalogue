@@ -27,5 +27,7 @@
     <string name="favorite_tv_shows">Favorite TV Show</string>
     <string name="logo">logo</string>
     <string name="fav_movie_tv"><![CDATA[Favorite Movie & TV Show]]></string>
+    <string name="message_undo">Batalkan menghapus item sebelumnya?</string>
+    <string name="message_ok">Oke</string>
 
 </resources>

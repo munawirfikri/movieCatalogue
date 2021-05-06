@@ -1,6 +1,7 @@
 package com.munawirfikri.bajp_submission3.data.source.local.room
 
 import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
 import androidx.room.*
 import com.munawirfikri.bajp_submission3.data.source.local.entity.MovieEntity
 import com.munawirfikri.bajp_submission3.data.source.local.entity.TvShowEntity
@@ -9,10 +10,10 @@ import com.munawirfikri.bajp_submission3.data.source.local.entity.TvShowEntity
 interface MovieDao {
 
     @Query("SELECT * FROM movieentities")
-    fun getMovies(): LiveData<List<MovieEntity>>
+    fun getMovies(): DataSource.Factory<Int, MovieEntity>
 
     @Query("SELECT * FROM tvshowentities")
-    fun getTvShows(): LiveData<List<TvShowEntity>>
+    fun getTvShows(): DataSource.Factory<Int, TvShowEntity>
 
     @Query("SELECT * FROM movieentities WHERE id = :movieId")
     fun getMovieById(movieId: String): LiveData<MovieEntity>
@@ -21,10 +22,10 @@ interface MovieDao {
     fun getTvShowById(tvShowId: String): LiveData<TvShowEntity>
 
     @Query("SELECT * FROM movieentities WHERE favorite = 1")
-    fun getFavoriteMovie(): LiveData<List<MovieEntity>>
+    fun getFavoriteMovie(): DataSource.Factory<Int, MovieEntity>
 
     @Query("SELECT * FROM tvshowentities WHERE favorite = 1")
-    fun getFavoriteTvShow(): LiveData<List<TvShowEntity>>
+    fun getFavoriteTvShow(): DataSource.Factory<Int, TvShowEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertMovies(movies: List<MovieEntity>)

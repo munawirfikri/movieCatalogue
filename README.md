@@ -22,3 +22,16 @@ Menampilkan data list detail tv show
 - Memastikan TextView untuk category tampil sesuai dengan yang diharapkan.
 - Memastikan TextView untuk description tampil sesuai dengan yang diharapkan.
 - Memastikan TextView untuk date release tampil sesuai dengan yang diharapkan.
+
+Menampil data favorite movie
+- Menambahkan film "Kapten Amerika: Avenger Pertama" ke dalam daftar favorite movie
+- Memberi tindakan klik back halaman
+- Memberi tindakan klik pada navigasi favorite
+- Memastikan rv_fav_movie dalam keadaan tampil.
+
+Menampil data favorite tv show
+- Menambahkan film "The Falcon and The Winter Soldier" ke dalam daftar favorite tv show
+- Memberi tindakan klik back halaman
+- Memberi tindakan klik pada navigasi favorite
+- Memberi tindakan klik TabLayout dengan teks Favorite TV Show
+- Memastikan rv_fav_tv_show dalam keadaan tampil.

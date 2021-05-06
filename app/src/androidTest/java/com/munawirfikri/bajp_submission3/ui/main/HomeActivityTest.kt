@@ -40,14 +40,14 @@ class HomeActivityTest {
 
     @Test
     fun loadDetailMovie() {
-        onView(withId(R.id.rv_movie)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(18, click()))
+        onView(withId(R.id.rv_movie)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
         onView(withId(R.id.tv_detail_title)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_detail_title)).check(matches(withText(dummyMovie[0].title)))
+        onView(withId(R.id.tv_detail_title)).check(matches(withText("Kapten Amerika: Avenger Pertama")))
         onView(withId(R.id.tv_detail_categories)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_detail_categories)).check(matches(withText(dummyMovie[0].category)))
+        onView(withId(R.id.tv_detail_categories)).check(matches(withText("Action, Adventure, Science Fiction")))
         onView(withId(R.id.tv_detail_release)).check(matches(isDisplayed()))
         onView(withId(R.id.tv_detail_description)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_detail_description)).check(matches(withText(dummyMovie[0].description)))
+        onView(withId(R.id.tv_detail_description)).check(matches(withText("Seorang pemuda sakit-sakitan yang berusaha untuk mendaftarkan diri di Angkatan Darat Amerika Serikat pada tahun 1943 untuk melawan Nazi, tetapi dianggap tidak layak secara fisik. Kemudian dia justru menawarkan diri untuk menjadi relawan dalam sebuah proyek yang disebut Rebirth, sebuah operasi militer rahasia untuk membantu upaya perang Amerika Serikat yang menggunakan serum tertentu untuk mengubah Steve Rogers ke puncak kesempurnaan manusia dan menjadi tentara super.")))
     }
 
     @Test
@@ -75,7 +75,7 @@ class HomeActivityTest {
 
     @Test
     fun loadFavoriteMovie(){
-        onView(withId(R.id.rv_movie)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(18, click()))
+        onView(withId(R.id.rv_movie)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
         onView(withId(R.id.fab)).perform(click())
         onView(isRoot()).perform(ViewActions.pressBack())
         onView(withId(R.id.navigation_favorite)).perform(click())

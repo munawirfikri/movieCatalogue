@@ -10,7 +10,10 @@ import com.munawirfikri.bajp_submission3.utils.AppExecutors
 import com.munawirfikri.bajp_submission3.utils.DataDummy
 import com.munawirfikri.bajp_submission3.utils.PagedListUtil
 import com.munawirfikri.bajp_submission3.vo.Resource
+import com.nhaarman.mockitokotlin2.doCallRealMethod
+import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -28,9 +31,9 @@ class MovieRepositoryTest {
     private val appExecutors = mock(AppExecutors::class.java)
 
     private val movieRepository = FakeMovieRepository(remote, local, appExecutors)
-
     private val movieReponses = DataDummy.generateRemoteDummyMovies()
     private val tvShowReponses = DataDummy.generateRemoteDummyTvShow()
+
 
 
     @Test
@@ -53,5 +56,33 @@ class MovieRepositoryTest {
         verify(local).getAllTvShows()
         assertNotNull(tvShowEntities.data)
         assertEquals(tvShowReponses.size.toLong(), tvShowEntities.data?.size?.toLong())
+    }
+
+    @Test
+    fun setMovieFavorite() {
+        doCallRealMethod().`when`(local).setMovieFavorite(DataDummy.generateDummyDetailMovie(), false)
+        local.setMovieFavorite(DataDummy.generateDummyDetailMovie(), true)
+        verify(local).setMovieFavorite(DataDummy.generateDummyDetailMovie(), true)
+    }
+
+    @Test
+    fun unSetMovieFavorite(){
+        doCallRealMethod().`when`(local).setMovieFavorite(DataDummy.generateDummyDetailMovie(), true)
+        local.setMovieFavorite(DataDummy.generateDummyDetailMovie(), false)
+        verify(local).setMovieFavorite(DataDummy.generateDummyDetailMovie(), false)
+    }
+
+    @Test
+    fun setTvShowFavorite(){
+        doCallRealMethod().`when`(local).setTvShowFavorite(DataDummy.generateDummyDetailTvShow(), false)
+        local.setTvShowFavorite(DataDummy.generateDummyDetailTvShow(), true)
+        verify(local).setTvShowFavorite(DataDummy.generateDummyDetailTvShow(), true)
+    }
+
+    @Test
+    fun unSetTvShowFavorite(){
+        doCallRealMethod().`when`(local).setTvShowFavorite(DataDummy.generateDummyDetailTvShow(), true)
+        local.setTvShowFavorite(DataDummy.generateDummyDetailTvShow(), false)
+        verify(local).setTvShowFavorite(DataDummy.generateDummyDetailTvShow(), false)
     }
 }

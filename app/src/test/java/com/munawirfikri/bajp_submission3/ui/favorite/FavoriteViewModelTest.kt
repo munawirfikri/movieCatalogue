@@ -7,6 +7,8 @@ import androidx.paging.PagedList
 import com.munawirfikri.bajp_submission3.data.source.MovieRepository
 import com.munawirfikri.bajp_submission3.data.source.local.entity.MovieEntity
 import com.munawirfikri.bajp_submission3.data.source.local.entity.TvShowEntity
+import com.munawirfikri.bajp_submission3.utils.DataDummy
+import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import org.junit.Before
 import org.junit.Test
 
@@ -78,4 +80,20 @@ class FavoriteViewModelTest {
         viewModel.getFavoriteTvShows().observeForever(tvShowObserver)
         verify(tvShowObserver).onChanged(dummyTvShows)
     }
+
+    @Test
+    fun setFavoriteMovie(){
+        viewModel.setFavoriteMovie(DataDummy.generateDummyDetailMovie())
+        verify(movieRepository).setMovieFavorite(DataDummy.generateDummyDetailMovie(), true)
+        verifyNoMoreInteractions(movieRepository)
+    }
+
+    @Test
+    fun setFavoriteTvShow(){
+        viewModel.setFavoriteTvShow(DataDummy.generateDummyDetailTvShow())
+        verify(movieRepository).setTvShowFavorite(DataDummy.generateDummyDetailTvShow(), true)
+        verifyNoMoreInteractions(movieRepository)
+    }
+
+
 }

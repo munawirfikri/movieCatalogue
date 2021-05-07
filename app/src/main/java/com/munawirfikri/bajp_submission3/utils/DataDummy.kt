@@ -75,7 +75,7 @@ object DataDummy {
     fun generateDummyDetailMovie() : MovieEntity {
         return MovieEntity("297802", "Aquaman (2018)", "Dulunya rumah bagi peradaban paling maju di Bumi, Atlantis sekarang menjadi kerajaan bawah air yang diperintah oleh Raja Orm yang haus kekuasaan. Dengan pasukan besar yang dimilikinya, Orm berencana untuk menaklukkan orang-orang samudra yang tersisa dan kemudian dunia permukaan. Yang menghalangi jalannya adalah Arthur Curry, saudara setengah manusia Orm, saudara setengah Atlantis dan pewaris sejati takhta.",
                         "Action, Adventure, Fantasy", "2018-12-07",
-                        8.0, R.drawable.poster_aquaman.toString(), "movie"
+                        8.0, R.drawable.poster_aquaman.toString(), "movie", false
                 )
     }
 

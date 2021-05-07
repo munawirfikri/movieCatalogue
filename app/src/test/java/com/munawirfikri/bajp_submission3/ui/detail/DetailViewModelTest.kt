@@ -8,6 +8,7 @@ import com.munawirfikri.bajp_submission3.data.source.local.entity.TvShowEntity
 import com.munawirfikri.bajp_submission3.data.source.MovieRepository
 import com.munawirfikri.bajp_submission3.utils.DataDummy
 import com.munawirfikri.bajp_submission3.vo.Resource
+import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import org.junit.Before
 import org.junit.Test
 
@@ -35,6 +36,7 @@ class DetailViewModelTest {
 
     @Mock
     private lateinit var movieRepository: MovieRepository
+
 
     @Mock
     private lateinit var movieObserver: Observer<Resource<MovieEntity>>
@@ -74,6 +76,28 @@ class DetailViewModelTest {
         viewModel.setSelectedMovie(dummyTvShowId)
         viewModel.getTvShow().observeForever(tvShowObserver)
         verify(tvShowObserver).onChanged(dummyDetailTvShow)
+    }
+
+    @Test
+    fun setMovieFavorite(){
+        val dummyMovie = Resource.success(DataDummy.generateDummyDetailMovie())
+        val movie = MutableLiveData<Resource<MovieEntity>>()
+        movie.value = dummyMovie
+        viewModel.setSelectedMovie(dummyMovieId)
+        viewModel.setMovieResource(movie.value!!.data!!)
+        viewModel.setFavoriteMovie()
+        verifyNoMoreInteractions(movieObserver)
+    }
+
+    @Test
+    fun setTvShowFavorite(){
+        val dummyDetailTvShow = Resource.success(DataDummy.generateDummyDetailTvShow())
+        val tvShow = MutableLiveData<Resource<TvShowEntity>>()
+        tvShow.value = dummyDetailTvShow
+        viewModel.setSelectedMovie(dummyTvShowId)
+        viewModel.setTvShowResource(tvShow.value!!.data!!)
+        viewModel.setFavoriteTvShow()
+        verifyNoMoreInteractions(tvShowObserver)
     }
 
 }
